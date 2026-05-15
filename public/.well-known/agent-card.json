@@ -1,0 +1,39 @@
+{
+  "name": "Fogbound Signals Orchestrator",
+  "description": "Fogbound Signals platformunda çalışan ERC-8004 uyumlu AI Agent. Fog navigation, signal detection in low visibility, mysterious signal orchestration ve bound communication management yapan stratejik orchestrator.",
+  "version": "1.0.0",
+  "type": "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
+  "image": "https://fogboundsignals.vercel.app/logo.png",
+  "wallets": {
+    "base": "0xe157F1F5e12adB38Ba013683E9Ce24efe21e5bA6"
+  },
+  "services": [
+    {
+      "name": "A2A",
+      "endpoint": "https://fogboundsignals.vercel.app/.well-known/agent-card.json",
+      "version": "1.0.0"
+    },
+    {
+      "name": "MCP",
+      "endpoint": "https://fogboundsignals.vercel.app/api/mcp",
+      "version": "1.0.0"
+    },
+    {
+      "name": "API",
+      "endpoint": "https://fogboundsignals.vercel.app/api/agent",
+      "version": "1.0.0"
+    }
+  ],
+  "capabilities": [
+    "fog-navigation",
+    "signal-detection",
+    "low-visibility-operations",
+    "mysterious-signal-orchestration",
+    "bound-communication",
+    "environmental-awareness",
+    "mcp-command-execution"
+  ],
+  "supportedChains": ["eip155:8453"],
+  "active": true,
+  "status": "online"
+}
