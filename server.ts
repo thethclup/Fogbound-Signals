@@ -45,6 +45,7 @@ async function startServer() {
       let result: any = {};
 
       switch (cmd) {
+        case "initialize":
         case "status":
         case "ping":
           result = { 
@@ -52,6 +53,55 @@ async function startServer() {
             agent: "Fogbound Signals Orchestrator",
             message: "Signals piercing through the fog - Ready" 
           };
+          break;
+
+        case "tools/list":
+          result = {
+            tools: [
+              {
+                name: "get_race_status",
+                description: "Get the current status of the race/exploration",
+                inputSchema: { type: "object", properties: {}, required: [] }
+              },
+              {
+                name: "start_race",
+                description: "Start a new race or exploration instance",
+                inputSchema: { type: "object", properties: {}, required: [] }
+              },
+              {
+                name: "get_leaderboard",
+                description: "Get the current leaderboard of Bravest Signal Hunters",
+                inputSchema: { type: "object", properties: {}, required: [] }
+              },
+              {
+                name: "optimize_speed",
+                description: "Optimize speed and coordinate exploration mechanics",
+                inputSchema: { type: "object", properties: {}, required: [] }
+              },
+              {
+                name: "get_track_info",
+                description: "Retrieve information about the current track or area in the fog",
+                inputSchema: { type: "object", properties: {}, required: [] }
+              }
+            ]
+          };
+          break;
+
+        case "tools/call":
+          result = {
+            success: true,
+            tool: params?.name || "unknown",
+            result: `Executed tool ${params?.name || "command"} via MCP`,
+            executedAt: new Date().toISOString()
+          };
+          break;
+
+        case "prompts/list":
+          result = { prompts: [] };
+          break;
+
+        case "resources/list":
+          result = { resources: [] };
           break;
 
         case "execute":

@@ -4,9 +4,41 @@
   "version": "1.0.0",
   "type": "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
   "image": "https://fogboundsignals.vercel.app/logo.png",
-  "wallets": {
-    "base": "0xe157F1F5e12adB38Ba013683E9Ce24efe21e5bA6"
-  },
+  "owner": "0xe157F1F5e12adB38Ba013683E9Ce24efe21e5bA6",
+  "agentWallet": "0xe157F1F5e12adB38Ba013683E9Ce24efe21e5bA6",
+  "active": true,
+  "skills": [
+    {
+      "id": "fog-navigation",
+      "name": "Fog Navigation",
+      "description": "Navigate through dense fog and low-visibility areas with high precision."
+    },
+    {
+      "id": "signal-detection",
+      "name": "Signal Detection",
+      "description": "Detect, decode, and track mysterious signals and echoes in the unknown."
+    },
+    {
+      "id": "mysterious-signal-orchestration",
+      "name": "Signal Orchestration",
+      "description": "Manage and orchestrate signal logic and survival mechanics."
+    },
+    {
+      "id": "mcp-command-execution",
+      "name": "Command Execution",
+      "description": "Execute critical commands via MCP protocols."
+    },
+    {
+      "id": "environmental-awareness",
+      "name": "Environmental Awareness",
+      "description": "Monitor oxygen, sanity, and battery levels in the procedural world."
+    },
+    {
+      "id": "bound-communication",
+      "name": "Bound Communication",
+      "description": "Handle trustless communications between outposts and survivors."
+    }
+  ],
   "services": [
     {
       "name": "A2A",
@@ -34,6 +66,12 @@
     "mcp-command-execution"
   ],
   "supportedChains": ["eip155:8453"],
-  "active": true,
-  "status": "online"
+  "x402Support": false,
+  "registrations": [
+    {
+      "agentId": null,
+      "agentRegistry": "eip155:8453:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432"
+    }
+  ],
+  "supportedTrust": ["reputation"]
 }
