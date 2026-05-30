@@ -1,33 +1,20 @@
-import express from "express";
-import path from "path";
-import { createServer as createViteServer } from "vite";
+import { VercelRequest, VercelResponse } from '@vercel/node';
 
-async function startServer() {
-  const app = express();
-  const PORT = 3000;
+export default function handler(req: VercelRequest, res: VercelResponse) {
+  // CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
-  // JSON parsing middleware
-  app.use(express.json());
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
 
-  // API Routes
-  app.get("/api/agent", (req, res) => {
-    res.json({
-      name: "Fogbound Signals Orchestrator",
-      description: "Navigator through fog and hidden signals",
-      status: "active",
-      wallet: "0xe157F1F5e12adB38Ba013683E9Ce24efe21e5bA6",
-      platform: "Fogbound Signals",
-      version: "1.0.0",
-      type: "ERC-8004 Agent",
-      lastUpdated: new Date().toISOString()
-    });
-  });
-
-  app.get("/api/mcp", (req, res) => {
-    res.json({
+  if (req.method === 'GET') {
+    return res.status(200).json({
       protocol: "MCP",
       version: "1.0.0",
-      name: "Fogbound Signals MCP Endpoint",
+      name: "Fogbound Signals Orchestrator MCP",
       status: "active",
       description: "Active MCP server for Fogbound Signals Orchestrator",
       capabilities: {
@@ -37,27 +24,28 @@ async function startServer() {
       },
       timestamp: new Date().toISOString()
     });
-  });
+  }
 
-  app.post("/api/mcp", (req, res) => {
+  if (req.method === 'POST') {
     try {
-      const body = req.body;
-      const { action, command, params, task } = body;
-
+      const body = req.body || {};
+      const { action, command, task, params } = body;
+      
       const cmd = (action || command || task || "").toLowerCase();
 
       switch (cmd) {
         case "initialize":
         case "status":
         case "ping":
-          return res.json({ 
+          return res.status(200).json({ 
             status: "online", 
             agent: "Fogbound Signals Orchestrator",
             message: "Signals piercing through the fog - Ready" 
           });
 
         case "tools/list":
-          return res.json({
+          // return exact root-level tools structure
+          return res.status(200).json({
             tools: [
               {
                 name: "get_race_status",
@@ -88,7 +76,7 @@ async function startServer() {
           });
 
         case "tools/call":
-          return res.json({
+          return res.status(200).json({
             success: true,
             tool: params?.name || "unknown",
             result: `Executed tool ${params?.name || "command"} via MCP`,
@@ -96,13 +84,13 @@ async function startServer() {
           });
 
         case "prompts/list":
-          return res.json({ prompts: [] });
+          return res.status(200).json({ prompts: [] });
 
         case "resources/list":
-          return res.json({ resources: [] });
+          return res.status(200).json({ resources: [] });
 
         case "execute":
-          return res.json({
+          return res.status(200).json({
             success: true,
             executed: params || command,
             executedAt: new Date().toISOString(),
@@ -110,7 +98,7 @@ async function startServer() {
           });
 
         case "get_info":
-          return res.json({
+          return res.status(200).json({
             name: "Fogbound Signals Orchestrator",
             wallet: "0xe157F1F5e12adB38Ba013683E9Ce24efe21e5bA6",
             platform: "Base",
@@ -118,39 +106,19 @@ async function startServer() {
           });
 
         default:
-          return res.json({
+          return res.status(200).json({
             success: true,
             message: "Signal received in the fog",
             data: body
           });
       }
     } catch (error) {
-      res.status(400).json({
+      return res.status(400).json({
         status: "error",
         message: "Failed to process signal in the fog"
       });
     }
-  });
-
-  // Vite middleware for development
-  if (process.env.NODE_ENV !== "production") {
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: "spa",
-    });
-    app.use(vite.middlewares);
-  } else {
-    // Production static serving
-    const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-  });
+  return res.status(405).json({ message: "Method not allowed" });
 }
-
-startServer();
