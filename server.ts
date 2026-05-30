@@ -42,12 +42,17 @@ async function startServer() {
   app.post("/api/mcp", (req, res) => {
     try {
       const body = req.body;
-      const { action, command, params, task } = body;
+      const { action, command, params, task, method, id } = body;
 
-      const cmd = (action || command || task || "").toLowerCase();
+      const cmd = (method || action || command || task || "").toLowerCase();
 
       switch (cmd) {
         case "initialize":
+          return res.json({
+            protocolVersion: "2024-11-05",
+            capabilities: { tools: {}, prompts: {}, resources: {} },
+            serverInfo: { name: "Fogbound Signals Orchestrator", version: "1.0.0" }
+          });
         case "status":
         case "ping":
           return res.json({ 
