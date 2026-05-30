@@ -29,23 +29,32 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === 'POST') {
     try {
       const body = req.body || {};
-      const { action, command, task, params } = body;
+      const { action, command, task, params, method, id } = body;
       
-      const cmd = (action || command || task || "").toLowerCase();
+      const cmd = (method || action || command || task || "").toLowerCase();
+
+      let result: any = {};
 
       switch (cmd) {
         case "initialize":
+          result = {
+            protocolVersion: "2024-11-05",
+            capabilities: { tools: {}, prompts: {}, resources: {} },
+            serverInfo: { name: "Fogbound Signals Orchestrator", version: "1.0.0" }
+          };
+          break;
+
         case "status":
         case "ping":
-          return res.status(200).json({ 
+          result = { 
             status: "online", 
             agent: "Fogbound Signals Orchestrator",
             message: "Signals piercing through the fog - Ready" 
-          });
+          };
+          break;
 
         case "tools/list":
-          // return exact root-level tools structure
-          return res.status(200).json({
+          result = {
             tools: [
               {
                 name: "get_race_status",
@@ -73,45 +82,71 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
                 inputSchema: { type: "object", properties: {}, required: [] }
               }
             ]
-          });
+          };
+          break;
 
         case "tools/call":
-          return res.status(200).json({
+          result = {
             success: true,
             tool: params?.name || "unknown",
             result: `Executed tool ${params?.name || "command"} via MCP`,
             executedAt: new Date().toISOString()
-          });
+          };
+          break;
 
         case "prompts/list":
-          return res.status(200).json({ prompts: [] });
+          result = { prompts: [] };
+          break;
 
         case "resources/list":
-          return res.status(200).json({ resources: [] });
+          result = { resources: [] };
+          break;
 
         case "execute":
-          return res.status(200).json({
+          result = {
             success: true,
             executed: params || command,
             executedAt: new Date().toISOString(),
             message: "Signal successfully transmitted through the fog"
-          });
+          };
+          break;
 
         case "get_info":
-          return res.status(200).json({
+          result = {
             name: "Fogbound Signals Orchestrator",
             wallet: "0xe157F1F5e12adB38Ba013683E9Ce24efe21e5bA6",
             platform: "Base",
             version: "1.0.0"
-          });
+          };
+          break;
 
         default:
-          return res.status(200).json({
+          result = {
             success: true,
             message: "Signal received in the fog",
             data: body
-          });
+          };
       }
+
+      if (method && id !== undefined) {
+        return res.status(200).json({
+          jsonrpc: "2.0",
+          id: id,
+          result: result
+        });
+      }
+
+      return res.status(200).json({
+        status: "success",
+        agent: "Fogbound Signals Orchestrator",
+        response: result,
+        result: result,
+        tools: result.tools || [],
+        prompts: result.prompts || [],
+        resources: result.resources || [],
+        receivedAt: new Date().toISOString()
+      });
+
     } catch (error) {
       return res.status(400).json({
         status: "error",
