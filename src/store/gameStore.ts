@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export type GameScreen = 'title' | 'game' | 'outpost' | 'dead' | 'leaderboard';
+export type GameScreen = 'title' | 'game' | 'outpost' | 'dead' | 'leaderboard' | 'archives';
 
 export interface POI {
   id: string;

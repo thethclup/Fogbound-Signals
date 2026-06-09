@@ -1,6 +1,7 @@
 import { toHex, concat } from 'viem';
 
-export const BASE_BUILDER_CODE = 'bc_pser6cou';
+export const BASE_BUILDER_CODE = '[BUILDER_CODE]';
+export const ATTRIBUTION_CODE = '[ATTRIBUTION_CODE]';
 
 /**
  * ERC-8021: Transaction Attribution Extension

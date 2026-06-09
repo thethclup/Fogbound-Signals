@@ -14,32 +14,32 @@ export const Leaderboard: React.FC = () => {
   const setScreen = useGameStore(s => s.setScreen);
 
   return (
-    <div className="fixed inset-0 bg-zinc-950 flex flex-col items-center justify-center p-6 z-50">
+    <div className="fixed inset-0 bg-[#050505] flex flex-col items-center justify-center p-6 z-50">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md"
+        className="w-full max-w-lg"
       >
-        <h2 className="text-3xl text-zinc-100 tracking-widest uppercase mb-2 text-center">Bravest Hunters</h2>
-        <p className="text-zinc-500 text-xs text-center mb-8 uppercase tracking-widest">Base Mainnet Hybrid Ledger</p>
+        <h2 className="text-4xl text-zinc-100 font-['Cinzel'] tracking-[0.3em] uppercase mb-2 text-center drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">Bravest Nomads</h2>
+        <p className="text-cyan-800 text-[10px] font-mono text-center mb-10 uppercase tracking-[0.4em]">Base Mainnet Hybrid Ledger</p>
 
-        <div className="bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden mb-8">
-          <table className="w-full text-sm text-left text-zinc-400">
-            <thead className="text-xs text-zinc-500 uppercase bg-zinc-950/50">
+        <div className="bg-[#050505] border border-zinc-800/80 rounded-sm overflow-hidden mb-8 shadow-2xl">
+          <table className="w-full text-sm text-left text-zinc-400 font-mono">
+            <thead className="text-[10px] text-zinc-600 uppercase bg-zinc-900/30 border-b border-zinc-900">
               <tr>
-                <th className="px-4 py-3">Rank</th>
-                <th className="px-4 py-3">Hunter</th>
-                <th className="px-4 py-3 text-right">Score</th>
-                <th className="px-4 py-3 text-right">Signals</th>
+                <th className="px-4 py-3 tracking-widest">Rank</th>
+                <th className="px-4 py-3 tracking-widest">Nomad</th>
+                <th className="px-4 py-3 text-right tracking-widest">Range</th>
+                <th className="px-4 py-3 text-right tracking-widest">Data</th>
               </tr>
             </thead>
             <tbody>
               {MOCK_LEADERBOARD.map((row) => (
-                <tr key={row.rank} className="border-b border-zinc-800/50 hover:bg-zinc-800/50 transition-colors">
-                  <td className="px-4 py-3 font-mono">{row.rank}</td>
-                  <td className="px-4 py-3 font-mono text-cyan-400">{row.address}</td>
-                  <td className="px-4 py-3 text-right font-mono text-zinc-300">{row.score}</td>
-                  <td className="px-4 py-3 text-right font-mono text-fuchsia-400">{row.signals}</td>
+                <tr key={row.rank} className="border-b border-zinc-900/50 hover:bg-zinc-900/50 transition-colors">
+                  <td className="px-4 py-4 text-xs text-zinc-500">{row.rank < 10 ? `0${row.rank}` : row.rank}</td>
+                  <td className="px-4 py-4 text-xs text-cyan-600/80">{row.address}</td>
+                  <td className="px-4 py-4 text-right text-xs text-zinc-300">{row.score}</td>
+                  <td className="px-4 py-4 text-right text-xs text-amber-600/80">{row.signals}</td>
                 </tr>
               ))}
             </tbody>
@@ -48,9 +48,9 @@ export const Leaderboard: React.FC = () => {
 
         <button 
           onClick={() => setScreen('title')}
-          className="w-full px-4 py-3 border border-zinc-700 hover:bg-zinc-800 text-zinc-300 text-sm font-bold uppercase rounded transition-colors"
+          className="w-full px-4 py-3 border-t border-zinc-800 text-zinc-500 hover:text-zinc-300 text-xs font-mono uppercase tracking-[0.2em] transition-colors"
         >
-          Back to Title
+          Return to Hub
         </button>
       </motion.div>
     </div>
